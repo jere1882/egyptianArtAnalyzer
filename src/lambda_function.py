@@ -4,7 +4,7 @@ import os
 import time
 from typing import Dict, Any
 
-from gemini_strategy import analyze_egyptian_art_with_gemini
+from src.gemini_strategy import analyze_egyptian_art_with_gemini
 
 def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     """

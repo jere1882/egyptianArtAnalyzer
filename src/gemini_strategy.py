@@ -5,8 +5,9 @@ import json
 import google.generativeai as genai
 import io
 import PIL.Image
-from schemas import EgyptianArtAnalysis
 import sys
+
+from src.schemas import EgyptianArtAnalysis
 
 DEFAULT_THINKING_BUDGET = 2000
 
@@ -15,26 +16,13 @@ def create_egyptian_art_prompt(image_type_hint=None):
     base_prompt = """You are an expert Egyptologist with deep knowledge of ancient Egyptian art, tomb paintings, temple reliefs, and ancient texts. You are analyzing a photograph taken by a tourist of ancient Egyptian wall decorations, likely from famous sites like the Valley of the Kings, Karnak Temple, or other well-documented locations.
 
 **IMPORTANT: Use your extensive knowledge of famous Egyptian tombs and their documented artwork, especially:**
-- Tutankhamun's tomb (KV62) and its famous painted scenes
-- Other Valley of the Kings tombs (KV1-KV64)
+- Valley of the Kings tombs (KV1-KV64), such as Tutankhamun's tomb (KV62)
+- Valley of the Queens tombs
 - Well-documented temple reliefs from Karnak, Luxor, Abu Simbel
 - Famous Egyptian artworks
 
 Your task is to analyze what is depicted in the captured image. Provide a detailed analysis in the specified JSON format.
-
-If there are characters depicted (e.g., gods, pharaohs, queens, officials, or other people), identify them by name. For each identified character, provide:
-1.  **Character Name**: The name of the individual or deity.
-2.  **Reasoning**: A clear explanation of *why* you identified them as such (e.g., specific regalia, iconography, context).
-3.  **Description**: Any interesting facts or a brief description of the character/deity.
-4.  **Location**: Their approximate position in the image (e.g., "far left", "center", "right side", "behind the pharaoh").
-
-For any ancient Egyptian text, hieroglyphs, or symbols, attempt to translate them. If a full translation is not possible due to image quality or complexity, try to identify individual elements, cartouches (especially those containing royal or deity names), or speculate on the general meaning based on context.
-
-Guess the location where the picture was taken (e.g., "Valley of the Kings, Tomb of Tutankhamun (KV62)", "Karnak Temple, Hypostyle Hall"). Be specific if possible, but use speculative language ("possibly", "likely", "could be") if you are not absolutely certain.
-
-Highlight one particularly interesting detail from the image that an amateur might miss but an Egyptologist would find fascinating.
-
-Finally, provide your best guess as to the historical period when the artwork was produced (e.g., "Old Kingdom", "Middle Kingdom", "New Kingdom", "Ptolemaic Period")."""
+"""
     
     if image_type_hint and image_type_hint != 'unknown':
         base_prompt += f"\n\nHint: The image most likely belongs to a {image_type_hint}."

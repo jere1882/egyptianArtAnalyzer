@@ -1,34 +1,112 @@
-# Egyptian Art Analyzer - AWS Lambda
+# Egyptian Art Analyzer
 
-This is the AWS Lambda version of the Egyptian art analysis API, converted from the Vercel function.
+**AI-powered analysis of ancient Egyptian art, hieroglyphs, and historical artifacts using Google Gemini.**
 
-## Prerequisites
+Upload a photo of Egyptian tomb paintings, temple reliefs, or hieroglyphic inscriptions, and get instant expert-level analysis including:
+
+- **Hieroglyph Translation** - Decode ancient Egyptian text and symbols
+- **Character Identification** - Recognize gods, pharaohs, and historical figures by their iconography
+- **Location Detection** - Identify famous sites like the Valley of the Kings, Karnak Temple, and specific tombs
+- **Historical Context** - Date artifacts to specific Egyptian periods (Old Kingdom, New Kingdom, etc.)
+- **Expert Insights** - Discover fascinating details that casual observers might miss
+
+This project leverages Google's Gemini AI to provide Egyptologist-level analysis of ancient Egyptian artwork, making archaeological expertise accessible to tourists, students, and enthusiasts. The API is deployed as a serverless AWS Lambda function for scalability and reliability.
+
+## Project Structure
+
+```
+egyptianArtAnalyzer/
+├── src/                    # Source code
+│   ├── __init__.py
+│   ├── lambda_function.py  # AWS Lambda handler
+│   ├── gemini_strategy.py  # Gemini AI integration
+│   └── schemas.py          # Pydantic data models
+├── scripts/                # Deployment scripts
+│   ├── deploy.sh          # Main deployment script
+│   └── setup-iam.sh       # IAM setup
+├── data/                   # Sample Egyptian art images
+│   └── README.md
+├── predict.py              # Local testing script
+├── Dockerfile              # Lambda container definition
+├── requirements.txt        # Python dependencies
+├── env.example             # Environment variables template
+└── README.md               # This file
+```
+
+## Getting Started
+
+### Quick Start (Local Testing)
+
+1. **Clone the repository**
+```bash
+git clone <repo-url>
+cd egyptianArtAnalyzer
+```
+
+2. **Install the package**
+```bash
+pip install -e .
+```
+
+This installs the package in editable mode along with all dependencies.
+
+3. **Set up your API key**
+
+Copy `env.example` to `env.local` and add your Google API key:
+```bash
+cp env.example env.local
+# Edit env.local and add your GOOGLE_API_KEY
+```
+
+Or create `env.local` with:
+```bash
+echo "GOOGLE_API_KEY=your-key-here" > env.local
+```
+
+4. **Test on sample images**
+```bash
+python predict.py data/sample-egyptian-images/VoK.jpg
+```
+
+That's it! The script will analyze the image and display the results.
+
+### Command Options
+
+```bash
+# Different speed settings
+python predict.py path/to/image.jpg --speed regular    # More accurate, slower
+python predict.py path/to/image.jpg --speed fast       # Default, balanced
+python predict.py path/to/image.jpg --speed super-fast # Fastest
+
+# Provide image type hints for better analysis
+python predict.py path/to/image.jpg --type tomb
+python predict.py path/to/image.jpg --type temple
+
+# Get raw JSON output
+python predict.py path/to/image.jpg --json
+```
+
+## AWS Deployment
+
+### Prerequisites
 
 1. **AWS CLI configured** with appropriate permissions
 2. **Docker** installed and running
-3. **Google API Key** for Gemini AI
+3. **Google API Key** for Gemini AI (already set up above)
 4. **IAM Role** with Lambda execution permissions
 
-## Setup
+### Deployment Steps
 
-### 1. Create IAM Role
+1. **Create IAM Role**
 
 Create an IAM role with the following policies:
-
 - `AWSLambdaBasicExecutionRole`
 - `AWSLambdaVPCAccessExecutionRole` (if needed)
 
-### 2. Set Environment Variables
+2. **Deploy to AWS Lambda**
 
 ```bash
-export GOOGLE_API_KEY="your-google-api-key-here"
-```
-
-### 3. Deploy
-
-```bash
-cd lambda-egyptian-api
-./deploy.sh
+./scripts/deploy.sh
 ```
 
 ## API Usage

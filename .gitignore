@@ -52,3 +52,7 @@ response.json
 # Docker
 *.tar.gz
 
+# Data - ignore images but keep README
+data/*
+!data/README.md
+
